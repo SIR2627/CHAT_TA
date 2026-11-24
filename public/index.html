@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> SIR chat app</h1>
+    <div id ="chat">
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button id="sendButton">Send</button>
+    </div>
+    <div id="board">
+
+    </div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    const board = document.getElementById('board');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+sendButton.addEventListener('click', () => {
+    const mensagem = messageInput.value;
+    console.log(mensagem);
+    socket.emit('chat', mensagem);
+    messageInput.value = '';
+    });
+
+    socket.on('chat', (message) => {
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message.message;
+        messageElement.style.color = message.color;
+        board.appendChild(messageElement);
+    });
+
+</script>
+</html>
